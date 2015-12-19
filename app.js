@@ -1,3 +1,10 @@
+function createWordBank(arr){
+  var obj = {};
+  for (var i = 0; i < arr.length; i++){
+    obj[arr[i]] = arr[i];
+  }
+  return obj;
+}
 
 function htmlParser(str, match){
   var pattern = new RegExp(match,'i');
@@ -6,24 +13,25 @@ function htmlParser(str, match){
   }
 }
 
-function blocker(words){
-  words.forEach(function(word){
-    var body = document.body.getElementsByTagName('*');
-    var node;
-    for (var i = 0; i < body.length; i++){
-      if (body[i].children.length === 0){
-        node = htmlParser(body[i], word);
-        if (node){
-          node.style.backgroundColor = 'black';
-          node.style.color = 'black';
-        }
+
+function blocker(wordBank){
+  // {star wars: "star wars", han solo: "han solo", skywalker: "skywalker"}
+  var body = document.body.getElementsByTagName('*');
+  var node;
+  for (var i = 0; i < body.length; i++){
+    if (body[i].children.length === 0){
+      node = htmlParser(body[i], wordBank);
+      if (node){
+        node.style.backgroundColor = 'black';
+        node.style.color = 'black';
       }
     }
-  });
+  }
 }
 
 function init(wordList){
-  blocker(wordList);
+  var wordBank = createWordBank(words);
+  blocker(wordBank);
 }
 
 init(['star wars', 'han solo', 'skywalker']);
