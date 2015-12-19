@@ -1,18 +1,25 @@
 function createWordBank(arr){
   var obj = {};
+  arr = arr.join('|-').split(' ').join('|-').split('|-');
   for (var i = 0; i < arr.length; i++){
-    obj[arr[i]] = arr[i];
+    obj[arr[i].toLowerCase()] = arr[i].toLowerCase();
   }
   return obj;
 }
 
-function htmlParser(str, match){
-  var pattern = new RegExp(match,'i');
-  if (pattern.test(str.innerHTML)){
-    return str;
-  }
+function blockStyle(node){
+  node.style.backgroundColor = 'black';
+  node.style.color = 'black';
 }
 
+function htmlParser(str, wordBank){
+  var words = str.innerHTML.split(' ');
+  words.forEach(function(word){
+    if (wordBank[word.toLowerCase()]){
+      blockStyle(str);
+    }
+  });
+}
 
 function blocker(wordBank){
   // {star wars: "star wars", han solo: "han solo", skywalker: "skywalker"}
@@ -20,17 +27,14 @@ function blocker(wordBank){
   var node;
   for (var i = 0; i < body.length; i++){
     if (body[i].children.length === 0){
-      node = htmlParser(body[i], wordBank);
-      if (node){
-        node.style.backgroundColor = 'black';
-        node.style.color = 'black';
-      }
+      htmlParser(body[i], wordBank);
     }
   }
 }
 
+
 function init(wordList){
-  var wordBank = createWordBank(words);
+  var wordBank = createWordBank(wordList);
   blocker(wordBank);
 }
 
