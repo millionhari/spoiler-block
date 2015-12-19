@@ -1,4 +1,3 @@
-
 function htmlParser(str, match){
   var pattern = new RegExp(match,'i');
   if (pattern.test(str.innerHTML)){
