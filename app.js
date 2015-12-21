@@ -12,8 +12,15 @@ function blockStyle(node){
   node.style.color = 'black';
 }
 
+function removePunctuations(str){
+  var noPunctuationsStr = str.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g,"");
+  noPunctuationsStr = noPunctuationsStr.replace(/\s{2,}/g," ");
+  return noPunctuationsStr;
+}
+
 function htmlParser(str, wordBank){
-  var words = str.innerHTML.split(' ');
+  var noPunctuationsStr = removePunctuations(str.innerHTML);
+  var words = noPunctuationsStr.split(' ');
   words.forEach(function(word){
     if (wordBank[word.toLowerCase()]){
       blockStyle(str);
@@ -22,7 +29,6 @@ function htmlParser(str, wordBank){
 }
 
 function blocker(wordBank){
-  // {star wars: "star wars", han solo: "han solo", skywalker: "skywalker"}
   var body = document.body.getElementsByTagName('*');
   var node;
   for (var i = 0; i < body.length; i++){
@@ -38,12 +44,4 @@ function init(wordList){
   blocker(wordBank);
 }
 
-init(['star wars', 'han solo', 'skywalker']);
-
-// element.style.backgroundColor = 'black';
-// element.style.color = 'black';
-
-// for (var i =0; i < body.length; i++){
-  // body[i].style.backgroundColor = 'black';
-  // body[i].style.color = 'black'
-// }
+init(['star wars', 'skywalker', 'han']);
