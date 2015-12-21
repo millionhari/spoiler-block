@@ -42,13 +42,13 @@ function blockStyle(node){
 }
 
 // Account for possessive and hypens
-// If last character is punctuation
 
 function htmlParser(str, wordBank){
   var words = str.innerHTML.split(' ');
   var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
 
   words.forEach(function(word){
+    // If last character is a special character
     if (specialCharacter.test(word[word.length-1])){
       word = word.slice(0,word.length-1);
     }
