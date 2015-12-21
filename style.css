@@ -1,3 +1,33 @@
 body {
   font-family: 'Open Sans', sans-serif;
 }
+
+.spoiler-block-censored {
+  color: black;
+  background-color: black;
+}
+
+.spoiler-block-censored a {
+  color: black;
+  text-decoration: none;
+}
+
+.spoiler-block-censored a:link {
+  color: black;
+  text-decoration: none;
+}
+
+.spoiler-block-censored a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.spoiler-block-censored a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.spoiler-block-censored a:active {
+  color: black;
+  text-decoration: none;
+}

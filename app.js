@@ -1,30 +1,57 @@
 function createWordBank(arr){
   var obj = {};
+  var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
+  var mutatedWord;
   arr = arr.join('|-').split(' ').join('|-').split('|-');
   for (var i = 0; i < arr.length; i++){
+    // register lowercase word
     obj[arr[i].toLowerCase()] = arr[i].toLowerCase();
+
+    // register plural 's' form of word
     if (arr[i][arr[i].length-1].toLowerCase() !== 's'){
-      obj[arr[i].toLowerCase().concat('s')] = arr[i].toLowerCase().concat('s');
+      mutatedWord = arr[i].toLowerCase().concat('s');
+      obj[mutatedWord] = mutatedWord;
+    }
+
+    // register possessive 'ed' form of word
+    if (arr[i].slice(arr[i].length-2, arr[i].length).toLowerCase() !== 'ed'){
+      mutatedWord = arr[i].toLowerCase().concat('ed');
+      obj[mutatedWord] = mutatedWord;
+    }
+
+    // register punctuationless form of word
+    if (specialCharacter.test(arr[i])){
+      mutatedWord = arr[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+      obj[mutatedWord] = mutatedWord;
     }
   }
   return obj;
 }
 
 function blockStyle(node){
+  // if (node.parentNode !== document.body){
+  //   node.parentNode.style.backgroundColor = 'black';
+  //   node.parentNode.style.color = 'black';
+  // } else {
+  //   node.style.backgroundColor = 'black';
+  //   node.style.color = 'black';
+  // }
+
   node.style.backgroundColor = 'black';
   node.style.color = 'black';
 }
 
-function removePunctuations(str){
-  var noPunctuationsStr = str.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g,"");
-  noPunctuationsStr = noPunctuationsStr.replace(/\s{2,}/g," ");
-  return noPunctuationsStr;
-}
+// Account for possessive and hypens
+// If last character is punctuation
 
 function htmlParser(str, wordBank){
-  var noPunctuationsStr = removePunctuations(str.innerHTML);
-  var words = noPunctuationsStr.split(' ');
+  var words = str.innerHTML.split(' ');
+  var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
+
   words.forEach(function(word){
+    if (specialCharacter.test(word[word.length-1])){
+      word = word.slice(0,word.length-1);
+    }
     if (wordBank[word.toLowerCase()]){
       blockStyle(str);
     }
@@ -47,4 +74,4 @@ function init(wordList){
   blocker(wordBank);
 }
 
-init(['star wars', 'skywalker', 'solo', 'lightsaber']);
+init(['bb-8', 'luke', 'han solo']);
