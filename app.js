@@ -3,6 +3,9 @@ function createWordBank(arr){
   arr = arr.join('|-').split(' ').join('|-').split('|-');
   for (var i = 0; i < arr.length; i++){
     obj[arr[i].toLowerCase()] = arr[i].toLowerCase();
+    if (arr[i][arr[i].length-1].toLowerCase() !== 's'){
+      obj[arr[i].toLowerCase().concat('s')] = arr[i].toLowerCase().concat('s');
+    }
   }
   return obj;
 }
@@ -44,4 +47,4 @@ function init(wordList){
   blocker(wordBank);
 }
 
-init(['star wars', 'skywalker', 'han']);
+init(['star wars', 'skywalker', 'solo', 'lightsaber']);
