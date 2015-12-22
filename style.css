@@ -2,9 +2,14 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.spoiler-block-censored {
+.spoiler-block-censored,
+.spoiler-block-censored > span,
+.spoiler-block-censored > div,
+.spoiler-block-censored > em {
   color: black;
   background-color: black;
+  border: 1px solid black;
+  border-radius: 8px;
 }
 
 .spoiler-block-censored a {

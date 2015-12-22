@@ -4,6 +4,7 @@
   "name": "Spoiler Block",
   "description": "This extension will black out divs based on specific keywords",
   "version": "1.0",
+  "permissions": ["storage"],
 
   "content_scripts": [
      {
