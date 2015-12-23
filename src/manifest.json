@@ -9,8 +9,8 @@
   "content_scripts": [
      {
        "matches": ["https://*/*", "http://*/*"],
-       "css": ["style.css"],
-       "js": ["app.js"]
+       "css": ["/styles/style.css"],
+       "js": ["/scripts/app.js"]
      }
    ]
 }

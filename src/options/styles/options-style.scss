@@ -1,3 +1,6 @@
+$lightgrey: #555;
+$subtext-size: 11px;
+
 .header {
   font-family: 'Amatic SC', cursive;
   font-size: 30px;
@@ -21,8 +24,8 @@
 }
 
 .subtext {
-  color: #555;
-  font-size: 11px;
+  color: $lightgrey;
+  font-size: $subtext-size;
 }
 
 .center-title.subtext {
@@ -39,13 +42,13 @@
 }
 
 .presets {
-  color: #555;
-  font-size: 11px;
+  color: $lightgrey;
+  font-size: $subtext-size;
   padding-right: 20px;
 }
 
 .break {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid $lightgrey;
   margin: 20px 0;
 }
 
@@ -54,9 +57,9 @@
   display: inline-block;
   height: 38px;
   padding: 0 30px;
-  color: #555;
+  color: $lightgrey;
   text-align: center;
-  font-size: 11px;
+  font-size: $subtext-size;
   font-weight: 600;
   line-height: 38px;
   letter-spacing: .1rem;
