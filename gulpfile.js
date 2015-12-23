@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
-    plumber = require('gulp-plumber'),
-    rename = require('gulp-rename');
+    plumber = require('gulp-plumber');
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -25,7 +24,6 @@ gulp.task('styles', function(){
     }}))
     .pipe(sass())
     .pipe(autoprefixer('last 2 versions'))
-    .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('dist/styles/'))
 });
@@ -37,8 +35,7 @@ gulp.task('scripts', function(){
         console.log(error.message);
         this.emit('end');
     }}))
-    .pipe(concat('main.js'))
-    .pipe(rename({suffix: '.min'}))
+    .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts/'))
 });
@@ -65,7 +62,6 @@ gulp.task('options-styles', function(){
     }}))
     .pipe(sass())
     .pipe(autoprefixer('last 2 versions'))
-    .pipe(rename({suffix: '.min'}))
     .pipe(concat('scss-files.scss'))
 
   var mergedStream = merge(cssStream, scssStream)
@@ -76,7 +72,19 @@ gulp.task('options-styles', function(){
   return mergedStream;
 });
 
-gulp.task('build', ['manifest', 'styles', 'scripts', 'options-html', 'options-styles']);
+gulp.task('options-scripts', function(){
+  return gulp.src('src/options/scripts/**/*.js')
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe(concat('options.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/options/scripts/'))
+});
+
+gulp.task('build', ['manifest', 'styles', 'scripts', 'options-html', 'options-styles', 'options-scripts']);
 
 gulp.task('watch', function(){
   gulp.watch("src/**/mainfest.json", ['manifest']);
@@ -84,6 +92,7 @@ gulp.task('watch', function(){
   gulp.watch("src/scripts/**/*.js", ['scripts']);
   gulp.watch("src/options/**/*.html", ['options-html']);
   gulp.watch("src/options/styles/**/*.scss", ['options-styles']);
+  gulp.watch("src/options/scripts/**/*.js", ['options-scripts']);
 });
 
 gulp.task('default', ['build', 'watch']);

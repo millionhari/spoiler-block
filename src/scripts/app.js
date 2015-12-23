@@ -37,22 +37,9 @@ var SpoilerBlock = (function(){
       node.classList.add('spoiler-block-censored');
       node.classList.add('spoiler-block-censored');
     }
-
-
-    // if (node.parentNode !== document.body){
-    //   node.parentNode.style.backgroundColor = 'black';
-    //   node.parentNode.style.color = 'black';
-    // } else {
-    //   node.style.backgroundColor = 'black';
-    //   node.style.color = 'black';
-    // }
-
-    // node.style.backgroundColor = 'black';
-    // node.style.color = 'black';
   }
 
   // Account for possessive and hypens
-
   function _htmlParser(str, wordBank){
     var words = str.innerHTML.split(' ');
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
