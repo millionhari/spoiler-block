@@ -32,22 +32,20 @@
     return currentObj;
   };
 
-  // TODO: convert object to array
-  var _objToArray = function(){
-
-  };
-
-
-  addButton.onclick = function(){
-    var inputBox = document.querySelector('.block-words').value.split(' ');
-    var wordsBank = _wordsObjectCreator(inputBox);
-
+  var _addToWordsListStorage = function(wordsBankObj){
     chrome.storage.sync.get('wordsList', function(currentStorage){
-      var updatedStorage = _combineObjects(currentStorage, wordsBank);
+      var updatedStorage = _combineObjects(currentStorage, wordsBankObj);
 
       chrome.storage.sync.set({'wordsList': updatedStorage}, function(){
         console.log('The storage has been updated!', updatedStorage);
       });
     });
+  };
+
+  addButton.onclick = function(){
+    var inputBox = document.querySelector('.block-words').value.split(' ');
+    var wordsBank = _wordsObjectCreator(inputBox);
+
+    _addToWordsListStorage(wordsBank);
   };
 })();
