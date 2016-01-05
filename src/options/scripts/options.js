@@ -1,7 +1,6 @@
 (function(){
   var addButton = document.querySelector('.button-add');
   // var removeButton = document.querySelector('.button-remove');
-  var port = chrome.runtime.connect({name:'spoilerblock'});
 
   var _wordsObjectCreator = function(arr){
     var obj = {};
@@ -49,25 +48,16 @@
   // var _removeFromWordsListStorage = function(str){
   //   chrome.storage.local.get('wordsList', function(currentStorage){
   //     var updatedStorage = currentStorage;
-
   //     chrome.storage.local.set({'wordsList': updatedStorage}, function(){
   //       console.log('The storage has been updated!', updatedStorage);
   //     });
   //   });
   // };
 
-  // var _sendStorageToBackground = function(){
-  //   chrome.storage.local.get('wordsList', function(storage){
-  //     port.postMessage({blockList: storage});
-  //   });
-  // };
-
-  // TODO: ADD EVENTS
 
   addButton.onclick = function(){
     var inputBox = document.querySelector('.block-words').value.split(' ');
     var wordsBank = _wordsObjectCreator(inputBox);
-
 
     _addToWordsListStorage(wordsBank);
   };

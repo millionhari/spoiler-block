@@ -7,7 +7,7 @@
   "permissions": ["storage"],
   "options_page": "/options/spoiler_block_options.html",
   "background": {
-    "scripts": ["/options/scripts/options.js"]
+    "scripts": ["/backgroundpage/background.js"]
   },
   "content_scripts": [
      {

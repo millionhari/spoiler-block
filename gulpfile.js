@@ -84,10 +84,23 @@ gulp.task('options-scripts', function(){
     .pipe(gulp.dest('dist/options/scripts/'))
 });
 
-gulp.task('build', ['manifest', 'styles', 'scripts', 'options-html', 'options-styles', 'options-scripts']);
+gulp.task('background', function(){
+  return gulp.src('src/backgroundpage/**/*.js')
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe(concat('background.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/backgroundpage/'))
+});
+
+gulp.task('build', ['manifest', 'background', 'styles', 'scripts', 'options-html', 'options-styles', 'options-scripts']);
 
 gulp.task('watch', function(){
   gulp.watch("src/**/manifest.json", ['manifest']);
+  gulp.watch("src/backgroundpage/**/*.js", ['background']);
   gulp.watch("src/styles/**/*.scss", ['styles']);
   gulp.watch("src/scripts/**/*.js", ['scripts']);
   gulp.watch("src/options/**/*.html", ['options-html']);
