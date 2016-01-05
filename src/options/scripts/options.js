@@ -68,7 +68,7 @@ var Options = (function(){
 
   function init(){
     addButton.onclick = function(){
-      var inputBox = document.querySelector('.block-words').value.split(' ');
+      var inputBox = document.querySelector('.block-words').value.replace(/\s\s+/g, ' ').split(' ');
       if (inputBox[inputBox.length-1] === ''){
         inputBox.pop();
       }
