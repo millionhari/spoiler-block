@@ -64,16 +64,18 @@ var SpoilerBlock = (function(){
   }
 
 
-  function init(wordList){
+  function init(){
     var port = chrome.runtime.connect({name:'spoilerblock'});
     port.postMessage({question:'What is the block list?'});
     port.onMessage.addListener(function(response){
-      var wordsList = response.blockList;
-      console.log(wordsList);
+      var blockList = response.blockList.wordsList;
+      var wordsList = [];
+      for (var i in blockList){
+        wordsList.push(blockList[i]);
+      }
+      var wordBank = _createWordBank(wordsList);
+      _blocker(wordBank);
     });
-
-    var wordBank = _createWordBank(wordList);
-    _blocker(wordBank);
   }
 
 
@@ -85,4 +87,4 @@ var SpoilerBlock = (function(){
 
 
 
-SpoilerBlock.init(['rebellion', 'death star', 'science fantasy', 'galactic war', 'empire', 'princess', 'droid', 'jedi', 'lightsaber', 'millennium falcon', 'duel', 'sword duel', 'jedi knight', 'smuggler', 'mind trick', 'stormtrooper', 'force', 'space war', 'extraterrestrial']);
+SpoilerBlock.init();
