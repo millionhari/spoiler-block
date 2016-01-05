@@ -1,5 +1,6 @@
 (function(){
   var addButton = document.querySelector('.button-add');
+  // var removeButton = document.querySelector('.button-remove');
   var _wordsObjectCreator = function(arr){
     var obj = {};
     for (var i = 0; i < arr.length; i++){
@@ -33,14 +34,25 @@
   };
 
   var _addToWordsListStorage = function(wordsBankObj){
-    chrome.storage.sync.get('wordsList', function(currentStorage){
+    chrome.storage.local.get('wordsList', function(currentStorage){
       var updatedStorage = _combineObjects(currentStorage, wordsBankObj);
 
-      chrome.storage.sync.set({'wordsList': updatedStorage}, function(){
-        console.log('The storage has been updated!', updatedStorage);
+      chrome.storage.local.set({'wordsList': updatedStorage}, function(){
+        console.log('The following words have been added', wordsBankObj);
       });
     });
   };
+
+  // TODO: Finish remove words from storage function
+  // var _removeFromWordsListStorage = function(str){
+  //   chrome.storage.local.get('wordsList', function(currentStorage){
+  //     var updatedStorage = currentStorage;
+
+  //     chrome.storage.local.set({'wordsList': updatedStorage}, function(){
+  //       console.log('The storage has been updated!', updatedStorage);
+  //     });
+  //   });
+  // };
 
   addButton.onclick = function(){
     var inputBox = document.querySelector('.block-words').value.split(' ');
@@ -48,4 +60,8 @@
 
     _addToWordsListStorage(wordsBank);
   };
+
+  // removeButton.onclick = function(){
+  //   _removeFromWordsListStorage('alkj');
+  // };
 })();
