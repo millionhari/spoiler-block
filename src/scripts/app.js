@@ -32,9 +32,7 @@ var SpoilerBlock = (function(){
   function _blockStyle(node){
     if (node.parentNode !== document.body){
       node.parentNode.classList.add('spoiler-block-censored');
-      node.parentNode.classList.add('spoiler-block-censored');
     } else {
-      node.classList.add('spoiler-block-censored');
       node.classList.add('spoiler-block-censored');
     }
   }
