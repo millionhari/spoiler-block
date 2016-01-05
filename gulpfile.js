@@ -87,7 +87,7 @@ gulp.task('options-scripts', function(){
 gulp.task('build', ['manifest', 'styles', 'scripts', 'options-html', 'options-styles', 'options-scripts']);
 
 gulp.task('watch', function(){
-  gulp.watch("src/**/mainfest.json", ['manifest']);
+  gulp.watch("src/**/manifest.json", ['manifest']);
   gulp.watch("src/styles/**/*.scss", ['styles']);
   gulp.watch("src/scripts/**/*.js", ['scripts']);
   gulp.watch("src/options/**/*.html", ['options-html']);

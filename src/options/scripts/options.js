@@ -1,6 +1,8 @@
 (function(){
   var addButton = document.querySelector('.button-add');
   // var removeButton = document.querySelector('.button-remove');
+  var port = chrome.runtime.connect({name:'spoilerblock'});
+
   var _wordsObjectCreator = function(arr){
     var obj = {};
     for (var i = 0; i < arr.length; i++){
@@ -54,14 +56,19 @@
   //   });
   // };
 
+  // var _sendStorageToBackground = function(){
+  //   chrome.storage.local.get('wordsList', function(storage){
+  //     port.postMessage({blockList: storage});
+  //   });
+  // };
+
+  // TODO: ADD EVENTS
+
   addButton.onclick = function(){
     var inputBox = document.querySelector('.block-words').value.split(' ');
     var wordsBank = _wordsObjectCreator(inputBox);
 
+
     _addToWordsListStorage(wordsBank);
   };
-
-  // removeButton.onclick = function(){
-  //   _removeFromWordsListStorage('alkj');
-  // };
 })();

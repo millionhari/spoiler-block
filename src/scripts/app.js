@@ -71,9 +71,18 @@ var SpoilerBlock = (function(){
     _blocker(wordBank);
   }
 
+  chrome.runtime.onConnect.addListener(function(port){
+    console.assert(port.name === "spoilerblock");
+    port.postMessage()
+    port.onMessage.addListener(function(blockList){
+      console.log(blockList);
+    });
+  });
+
   return {
     init: init
   };
+
 })();
 
 
