@@ -40,41 +40,40 @@ var Options = (function(){
     chrome.storage.local.get('wordsList', function(currentStorage){
       var updatedStorage = _combineObjects(currentStorage, wordsBankObj);
 
-      chrome.storage.local.set({'wordsList': updatedStorage}, function(){
-        console.log('The following words have been added', wordsBankObj);
-      });
+      chrome.storage.local.set({'wordsList': updatedStorage});
     });
   }
 
-  // TODO: Finish remove words from storage function
   function _removeAllWordsFromListStorage(){
-    chrome.storage.local.set({'wordsList': {}}, function(){
-      console.log('emptied!');
-    });
+    for (var i = 0; i < blockedWords.children.length; i++){
+      blockedWords.children[i].classList.add('animated', 'fadeOut');
+    }
+    setTimeout(function(){
+      chrome.storage.local.set({'wordsList': {}});
+    }, 500);
   }
 
-  function _removeWordFromListStorage(str){
-    chrome.storage.local.get('wordsList', function(response){
-      var wordsList = response.wordsList;
-      console.log(wordsList);
-    });
+  function _removeWordFromListStorage(word, listNode){
+    listNode.classList.add('animated','fadeOut');
+    setTimeout(function(){
+      chrome.storage.local.get('wordsList', function(currentStorage){
+        delete currentStorage.wordsList[word];
+        chrome.storage.local.set({'wordsList':currentStorage.wordsList});
+      });
+    }, 500);
   }
 
   function _createIndividualBlockedItem(blockedWord){
     var listItem = document.createElement('li');
     listItem.innerText = blockedWord;
     listItem.dataset[blockedWord] = blockedWord;
-    // blockedWord;
     listItem.onclick = function(){
-      chrome.storage.local.get('wordsList', function(currentStorage){
-        delete currentStorage.wordsList[blockedWord];
-        chrome.storage.local.set({'wordsList':currentStorage.wordsList});
-      });
+      _removeWordFromListStorage(blockedWord, listItem);
     };
     return listItem;
   }
 
-  function _createItemMaker(){
+  function _appendItemList(){
     chrome.storage.local.get('wordsList', function(response){
       var wordsList = response.wordsList;
       for (var i in wordsList){
@@ -84,7 +83,7 @@ var Options = (function(){
     });
   }
 
-  function _grabTextFromInputBox(){
+  function _createBlockedListFromInputBox(){
     inputBoxWords = inputBox.value.replace(/\s\s+/g, ' ').split(' ');
     if (inputBoxWords[inputBoxWords.length-1] === ''){
       inputBoxWords.pop();
@@ -95,17 +94,24 @@ var Options = (function(){
   }
 
   function init(){
-    addButton.onclick = _grabTextFromInputBox;
+    // On click or when 'add' button is pressed
+    addButton.onclick = _createBlockedListFromInputBox;
     inputBox.onkeypress = function(evt){
       if (evt.charCode === 13){
-        _grabTextFromInputBox();
+        _createBlockedListFromInputBox();
       }
     };
-
+    // Remove all
     removeButton.onclick = _removeAllWordsFromListStorage;
-
-
-    _createItemMaker();
+    // Add Blocked List Item
+    _appendItemList();
+    // Watch for changes
+    chrome.storage.onChanged.addListener(function(){
+      while (blockedWords.firstChild){
+        blockedWords.removeChild(blockedWords.firstChild);
+      }
+      _appendItemList();
+    });
   }
 
   return {
