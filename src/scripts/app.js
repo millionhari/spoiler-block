@@ -19,6 +19,12 @@ var SpoilerBlock = (function(){
         wordBank[mutatedWord] = mutatedWord;
       }
 
+      // register word ending with ':'
+      if (obj[i].slice(obj[i].length-1, obj[i].length).toLowerCase() !== ':'){
+        mutatedWord = obj[i].toLowerCase().concat(':');
+        wordBank[mutatedWord] = mutatedWord;
+      }
+
       // register punctuationless form of word
       if (specialCharacter.test(obj[i])){
         mutatedWord = obj[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
@@ -62,7 +68,6 @@ var SpoilerBlock = (function(){
       }
     }
   }
-
 
   function init(){
     var port = chrome.runtime.connect({name:'spoilerblock'});
