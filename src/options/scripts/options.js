@@ -1,7 +1,7 @@
 var Options = (function(){
   var addButton = document.querySelector('.button-add');
   var blockedWords = document.querySelector('.blocked-words');
-  // var removeButton = document.querySelector('.button-remove');
+  var removeButton = document.querySelector('.button-remove');
 
   function _wordsObjectCreator(arr){
     var obj = {};
@@ -46,14 +46,18 @@ var Options = (function(){
   }
 
   // TODO: Finish remove words from storage function
-  // function _removeFromWordsListStorage(str){
-  //   chrome.storage.local.get('wordsList', function(currentStorage){
-  //     var updatedStorage = currentStorage;
-  //     chrome.storage.local.set({'wordsList': updatedStorage}, function(){
-  //       console.log('The storage has been updated!', updatedStorage);
-  //     });
-  //   });
-  // };
+  function _removeAllWordsFromListStorage(){
+    chrome.storage.local.set({'wordsList': {}}, function(){
+      console.log('emptied!');
+    });
+  }
+
+  function _removeWordFromListStorage(str){
+    chrome.storage.local.get('wordsList', function(response){
+      var wordsList = response.wordsList;
+      console.log(wordsList);
+    });
+  }
 
   function _createItemMaker(){
     chrome.storage.local.get('wordsList', function(response){
@@ -61,6 +65,7 @@ var Options = (function(){
       for (var i in wordsList){
         var li = document.createElement('li');
         li.innerText = wordsList[i];
+        li.dataset[i] = i;
         blockedWords.appendChild(li);
       }
     });
@@ -76,6 +81,9 @@ var Options = (function(){
 
       _addToWordsListStorage(wordsBank);
     };
+
+    removeButton.onclick = _removeAllWordsFromListStorage;
+
     _createItemMaker();
   }
 
