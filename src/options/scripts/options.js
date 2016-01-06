@@ -59,12 +59,16 @@ var Options = (function(){
     });
   }
 
-  function _CreateIndividualBlockedItem(blockedWord){
+  function _createIndividualBlockedItem(blockedWord){
     var listItem = document.createElement('li');
     listItem.innerText = blockedWord;
     listItem.dataset[blockedWord] = blockedWord;
+    // blockedWord;
     listItem.onclick = function(){
-      console.log(blockedWord);
+      chrome.storage.local.get('wordsList', function(currentStorage){
+        delete currentStorage.wordsList[blockedWord];
+        chrome.storage.local.set({'wordsList':currentStorage.wordsList});
+      });
     };
     return listItem;
   }
@@ -73,7 +77,7 @@ var Options = (function(){
     chrome.storage.local.get('wordsList', function(response){
       var wordsList = response.wordsList;
       for (var i in wordsList){
-        var li = new _CreateIndividualBlockedItem(wordsList[i]);
+        var li = _createIndividualBlockedItem(wordsList[i]);
         blockedWords.appendChild(li);
       }
     });
