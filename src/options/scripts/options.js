@@ -2,6 +2,7 @@ var Options = (function(){
   var addButton = document.querySelector('.button-add');
   var blockedWords = document.querySelector('.blocked-words');
   var removeButton = document.querySelector('.button-remove');
+  var inputBox = document.querySelector('.block-words');
 
   function _wordsObjectCreator(arr){
     var obj = {};
@@ -83,18 +84,26 @@ var Options = (function(){
     });
   }
 
-  function init(){
-    addButton.onclick = function(){
-      var inputBox = document.querySelector('.block-words').value.replace(/\s\s+/g, ' ').split(' ');
-      if (inputBox[inputBox.length-1] === ''){
-        inputBox.pop();
-      }
-      var wordsBank = _wordsObjectCreator(inputBox);
+  function _grabTextFromInputBox(){
+    inputBoxWords = inputBox.value.replace(/\s\s+/g, ' ').split(' ');
+    if (inputBoxWords[inputBoxWords.length-1] === ''){
+      inputBoxWords.pop();
+    }
+    var wordsBank = _wordsObjectCreator(inputBoxWords);
+    _addToWordsListStorage(wordsBank);
+    inputBox.value = '';
+  }
 
-      _addToWordsListStorage(wordsBank);
+  function init(){
+    addButton.onclick = _grabTextFromInputBox;
+    inputBox.onkeypress = function(evt){
+      if (evt.charCode === 13){
+        _grabTextFromInputBox();
+      }
     };
 
     removeButton.onclick = _removeAllWordsFromListStorage;
+
 
     _createItemMaker();
   }
