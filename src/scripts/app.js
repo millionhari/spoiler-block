@@ -1,36 +1,36 @@
 var SpoilerBlock = (function(){
-  function _createWordBank(arr){
-    var obj = {};
+  function _createWordBank(obj){
+    var wordBank = {};
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
     var mutatedWord;
-    arr = arr.join('|-').split(' ').join('|-').split('|-');
-    for (var i = 0; i < arr.length; i++){
+    for (var i in obj){
       // register lowercase word
-      obj[arr[i].toLowerCase()] = arr[i].toLowerCase();
+      wordBank[obj[i].toLowerCase()] = obj[i].toLowerCase();
 
       // register plural 's' form of word
-      if (arr[i][arr[i].length-1].toLowerCase() !== 's'){
-        mutatedWord = arr[i].toLowerCase().concat('s');
-        obj[mutatedWord] = mutatedWord;
+      if (obj[i][obj[i].length-1].toLowerCase() !== 's'){
+        mutatedWord = obj[i].toLowerCase().concat('s');
+        wordBank[mutatedWord] = mutatedWord;
       }
 
       // register possessive 'ed' form of word
-      if (arr[i].slice(arr[i].length-2, arr[i].length).toLowerCase() !== 'ed'){
-        mutatedWord = arr[i].toLowerCase().concat('ed');
-        obj[mutatedWord] = mutatedWord;
+      if (obj[i].slice(obj[i].length-2, obj[i].length).toLowerCase() !== 'ed'){
+        mutatedWord = obj[i].toLowerCase().concat('ed');
+        wordBank[mutatedWord] = mutatedWord;
       }
 
       // register punctuationless form of word
-      if (specialCharacter.test(arr[i])){
-        mutatedWord = arr[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
-        obj[mutatedWord] = mutatedWord;
+      if (specialCharacter.test(obj[i])){
+        mutatedWord = obj[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        wordBank[mutatedWord] = mutatedWord;
       }
     }
-    return obj;
+    return wordBank;
   }
 
   function _blockStyle(node){
     if (node.parentNode !== document.body){
+      node.classList.add('spoiler-block-censored');
       node.parentNode.classList.add('spoiler-block-censored');
     } else {
       node.classList.add('spoiler-block-censored');
@@ -68,11 +68,7 @@ var SpoilerBlock = (function(){
     var port = chrome.runtime.connect({name:'spoilerblock'});
     port.postMessage({question:'What is the block list?'});
     port.onMessage.addListener(function(response){
-      var blockList = response.blockList.wordsList;
-      var wordsList = [];
-      for (var i in blockList){
-        wordsList.push(blockList[i]);
-      }
+      var wordsList = response.blockList.wordsList;
       var wordBank = _createWordBank(wordsList);
       _blocker(wordBank);
     });
