@@ -79,9 +79,21 @@ var SpoilerBlock = (function(){
     });
   }
 
+  function watchForDOMChanges(callback){
+    var target = document.body;
+    var observer = new MutationObserver(function(mutations){
+        callback();
+    });
+
+    var config = {attributes:true, childList:true, characterData:true};
+
+    observer.observe(target, config);
+  }
+
 
   return {
-    init: init
+    init: init,
+    watchForDOMChanges: watchForDOMChanges
   };
 
 })();
@@ -89,3 +101,5 @@ var SpoilerBlock = (function(){
 
 
 SpoilerBlock.init();
+SpoilerBlock.watchForDOMChanges(SpoilerBlock.init);
+
