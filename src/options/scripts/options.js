@@ -84,9 +84,13 @@ var Options = (function(){
   }
 
   function _createBlockedListFromInputBox(){
-    inputBoxWords = inputBox.value.replace(/\s\s+/g, ' ').split(' ');
+    inputBoxWords = inputBox.value.replace(/\s\s+/g, ' ').replace(/[^\w\s]/gi, '')
+.split(' ');
     if (inputBoxWords[inputBoxWords.length-1] === ''){
       inputBoxWords.pop();
+    }
+    if (inputBoxWords[0] === ''){
+      inputBoxWords.shift();
     }
     var wordsBank = _wordsObjectCreator(inputBoxWords);
     _addToWordsListStorage(wordsBank);
