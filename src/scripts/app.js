@@ -19,6 +19,23 @@ var SpoilerBlock = (function(){
         wordBank[mutatedWord] = mutatedWord;
       }
 
+      // register word beginning with '#''
+      if (obj[i][0] !== '#'){
+        mutatedWord = '#'.concat(obj[i].toLowerCase());
+        wordBank[mutatedWord] = mutatedWord;
+      }
+
+      // register word beginning and ending with quotations
+      if (obj[i][0] !== "'"){
+        mutatedWord = "'".concat(obj[i].toLowerCase());
+        wordBank[mutatedWord] = mutatedWord;
+      }
+
+      if (obj[i].slice(obj[i].length-2, obj[i].length) !== "'"){
+        mutatedWord = obj[i].toLowerCase().concat("'");
+        wordBank[mutatedWord] = mutatedWord;
+      }
+
       // register word ending with ':'
       if (obj[i].slice(obj[i].length-1, obj[i].length).toLowerCase() !== ':'){
         mutatedWord = obj[i].toLowerCase().concat(':');
@@ -81,8 +98,11 @@ var SpoilerBlock = (function(){
 
   function watchForDOMChanges(callback){
     var target = document.body;
+    var sum = 0;
     var observer = new MutationObserver(function(mutations){
         callback();
+        console.log(sum);
+        sum++;
     });
 
     var config = {attributes:true, childList:true, characterData:true};
