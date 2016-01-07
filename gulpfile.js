@@ -96,7 +96,7 @@ gulp.task('background', function(){
     .pipe(gulp.dest('dist/backgroundpage/'))
 });
 
-gulp.task('build', ['manifest', 'background', 'styles', 'scripts', 'options-html', 'options-styles', 'options-scripts']);
+gulp.task('build', ['manifest', 'images', 'background', 'styles', 'scripts', 'options-html', 'options-styles', 'options-scripts']);
 
 gulp.task('watch', function(){
   gulp.watch("src/**/manifest.json", ['manifest']);

@@ -2,6 +2,7 @@ $flashfadeout: #eee;
 $lightergrey: #999;
 $lightgrey: #555;
 $subtext-size: 11px;
+$navbar: #bf4934;
 
 .header {
   font-family: 'Amatic SC', cursive;
@@ -17,7 +18,7 @@ $subtext-size: 11px;
 }
 
 .navbar {
-  background-color: #333;
+  background-color: $navbar;
   color: white;
 }
 
