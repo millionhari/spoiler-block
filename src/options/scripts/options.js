@@ -84,7 +84,7 @@ var Options = (function(){
   }
 
   function _createBlockedListFromInputBox(){
-    inputBoxWords = inputBox.value.replace(/\s\s+/g, ' ').replace(/[^\w\s]/gi, '')
+    inputBoxWords = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(/[^\w\s]/gi, '')
 .split(' ');
     if (inputBoxWords[inputBoxWords.length-1] === ''){
       inputBoxWords.pop();
