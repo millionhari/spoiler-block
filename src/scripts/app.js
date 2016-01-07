@@ -102,4 +102,3 @@ var SpoilerBlock = (function(){
 
 SpoilerBlock.init();
 SpoilerBlock.watchForDOMChanges(SpoilerBlock.init);
-
