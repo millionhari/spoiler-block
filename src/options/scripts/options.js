@@ -3,6 +3,51 @@ var Options = (function(){
   var blockedWords = document.querySelector('.blocked-words');
   var removeButton = document.querySelector('.button-remove');
   var inputBox = document.querySelector('.block-words');
+  var ignoreWords = {
+    the: 'the',
+    of: 'of',
+    to: 'to',
+    and: 'and',
+    a: 'a',
+    in: 'in',
+    is: 'is',
+    it: 'it',
+    you: 'you',
+    that: 'that',
+    he: 'he',
+    was: 'was',
+    for: 'for',
+    on: 'on',
+    are: 'are',
+    with: 'with',
+    as: 'as',
+    i: 'i',
+    his: 'his',
+    they: 'they',
+    be: 'be',
+    at: 'at',
+    one: 'one',
+    have: 'have',
+    this: 'this',
+    from: 'from',
+    or: 'or',
+    had: 'had',
+    by: 'by',
+    but: 'but',
+    some: 'some',
+    what: 'what',
+    there: 'there',
+    we: 'we',
+    were: 'were',
+    all: 'all',
+    your: 'your',
+    an: 'an',
+    she: 'she',
+    do: 'do',
+    their: 'their',
+    if: 'if',
+    so: 'so'
+  };
 
   function _wordsObjectCreator(arr){
     var obj = {};
@@ -30,7 +75,9 @@ var Options = (function(){
 
   function _combineObjects(currentObj, newObj){
     for (var i in newObj){
-      currentObj[i] = newObj[i];
+      if (!ignoreWords[newObj[i]]){
+        currentObj[i] = newObj[i];
+      }
     }
     currentObj = _flattenObj(currentObj);
     return currentObj;
