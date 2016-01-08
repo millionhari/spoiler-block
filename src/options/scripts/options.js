@@ -3,6 +3,7 @@ var Options = (function(){
   var blockedWords = document.querySelector('.blocked-words');
   var removeButton = document.querySelector('.button-remove');
   var inputBox = document.querySelector('.block-words');
+  var buttonLog = document.querySelector('.button-log');
   var ignoreWords = {
     the: 'the',
     of: 'of',
@@ -112,7 +113,12 @@ var Options = (function(){
   function _createIndividualBlockedItem(blockedWord){
     var listItem = document.createElement('li');
     listItem.innerText = blockedWord;
-    listItem.dataset[blockedWord] = blockedWord;
+
+    // Set data attribute
+    var dataSetBlockedWord = blockedWord.replace(/\s+/g,'');
+    listItem.dataset[dataSetBlockedWord] = dataSetBlockedWord;
+
+    // Set onclick
     listItem.onclick = function(){
       _removeWordFromListStorage(blockedWord, listItem);
     };
@@ -129,17 +135,32 @@ var Options = (function(){
     });
   }
 
-  function _createBlockedListFromInputBox(){
-    inputBoxWords = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(/[^\w\s]/gi, '').split(' ');
+  function _filterAndConvertToArray(inputBox){
+    var removeSpaces = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'".<>\{\}\[\]\\\/]/gi, '').replace(/\s+/g,' ').replace(/\s/g,' ').replace(/,\s/g,',').split(',');
+
+    for (var i = 0; i < removeSpaces.length; i++){
+      if (removeSpaces[i][removeSpaces[i].length-1] === ' '){
+        removeSpaces[i] = removeSpaces[i].slice(0,removeSpaces[i].length-2);
+      }
+    }
+
     // Remove empty string in beginning
-    if (inputBoxWords[0] === ''){
-      inputBoxWords.shift();
+    if (removeSpaces[0] === ''){
+      removeSpaces.shift();
     }
 
     // Remove empty string at end
-    if (inputBoxWords[inputBoxWords.length-1] === ''){
-      inputBoxWords.pop();
+    if (removeSpaces[removeSpaces.length-1] === ''){
+      removeSpaces.pop();
     }
+
+
+    return removeSpaces;
+  }
+
+  function _createBlockedListFromInputBox(){
+    var inputBoxWords = _filterAndConvertToArray(inputBox);
+    console.log(inputBoxWords);
 
     var wordsBank = _wordsObjectCreator(inputBoxWords);
     _addToWordsListStorage(wordsBank);
@@ -156,6 +177,14 @@ var Options = (function(){
     };
     // Remove all
     removeButton.onclick = _removeAllWordsFromListStorage;
+
+    // Temporary Blocked
+    buttonLog.onclick = function(){
+      chrome.storage.local.get('wordsList', function(x){
+        console.log(x);
+      });
+    };
+
     // Add Blocked List Item
     _appendItemList();
     // Watch for changes
