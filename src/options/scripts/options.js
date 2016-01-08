@@ -130,14 +130,17 @@ var Options = (function(){
   }
 
   function _createBlockedListFromInputBox(){
-    inputBoxWords = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(/[^\w\s]/gi, '')
-.split(' ');
-    if (inputBoxWords[inputBoxWords.length-1] === ''){
-      inputBoxWords.pop();
-    }
+    inputBoxWords = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(/[^\w\s]/gi, '').split(' ');
+    // Remove empty string in beginning
     if (inputBoxWords[0] === ''){
       inputBoxWords.shift();
     }
+
+    // Remove empty string at end
+    if (inputBoxWords[inputBoxWords.length-1] === ''){
+      inputBoxWords.pop();
+    }
+
     var wordsBank = _wordsObjectCreator(inputBoxWords);
     _addToWordsListStorage(wordsBank);
     inputBox.value = '';
