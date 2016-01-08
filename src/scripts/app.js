@@ -1,4 +1,5 @@
 var SpoilerBlock = (function(){
+
   function _createWordBank(obj){
     var wordBank = {};
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
@@ -16,35 +17,6 @@ var SpoilerBlock = (function(){
       // register possessive 'ed' form of word
       if (obj[i].slice(obj[i].length-2, obj[i].length).toLowerCase() !== 'ed'){
         mutatedWord = obj[i].toLowerCase().concat('ed');
-        wordBank[mutatedWord] = mutatedWord;
-      }
-
-      // register word beginning with '#''
-      if (obj[i][0] !== '#'){
-        mutatedWord = '#'.concat(obj[i].toLowerCase());
-        wordBank[mutatedWord] = mutatedWord;
-      }
-
-      // register word beginning and ending with quotations
-      if (obj[i][0] !== "'"){
-        mutatedWord = "'".concat(obj[i].toLowerCase());
-        wordBank[mutatedWord] = mutatedWord;
-      }
-
-      if (obj[i].slice(obj[i].length-2, obj[i].length) !== "'"){
-        mutatedWord = obj[i].toLowerCase().concat("'");
-        wordBank[mutatedWord] = mutatedWord;
-      }
-
-      // register word ending with ':'
-      if (obj[i].slice(obj[i].length-1, obj[i].length).toLowerCase() !== ':'){
-        mutatedWord = obj[i].toLowerCase().concat(':');
-        wordBank[mutatedWord] = mutatedWord;
-      }
-
-      // register punctuationless form of word
-      if (specialCharacter.test(obj[i])){
-        mutatedWord = obj[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
         wordBank[mutatedWord] = mutatedWord;
       }
     }
@@ -66,6 +38,7 @@ var SpoilerBlock = (function(){
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
 
     words.forEach(function(word){
+      word = word.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
       // If last character is a special character
       if (specialCharacter.test(word[word.length-1])){
         word = word.slice(0,word.length-1);

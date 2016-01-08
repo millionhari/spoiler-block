@@ -26,7 +26,6 @@ var Options = (function(){
     they: 'they',
     be: 'be',
     at: 'at',
-    one: 'one',
     have: 'have',
     this: 'this',
     from: 'from',
