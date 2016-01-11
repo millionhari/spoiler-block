@@ -34,6 +34,21 @@ var SpoilerBlock = (function(){
 
   // Account for possessive and hypens
   function _htmlParser(str, wordBank){
+    // TODO: MAKE FUNCTION READ EVERY X WORD
+    function jumpX(arr, jump){
+      var combined = [];
+      var currentNum = 0;
+      for (var i = 0; i < arr.length; i++){
+        while (currentNum<jump){
+          if (arr[i+currentNum] === arr[arr.length]){return;}
+          combined.push(arr[i+currentNum]);
+          currentNum++;
+        }
+        currentNum = 0;
+        combined = [];
+      }
+    }
+
     var words = str.innerHTML.split(' ');
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
 
