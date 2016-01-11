@@ -136,24 +136,13 @@ var Options = (function(){
   }
 
   function _filterAndConvertToArray(inputBox){
-    var removeSpaces = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'".<>\{\}\[\]\\\/]/gi, '').replace(/\s+/g,' ').replace(/\s/g,' ').replace(/,\s/g,',').split(',');
+    var removeSpaces = inputBox.value.replace(/[`~!@#$%^&*()_|+\-=?;:'".<>\{\}\[\]\\\/]/gi, '').replace(/\s+/g,' ').replace(/\s/g,' ').replace(/,\s/g,',').replace(/^\s+|\s+$/g, "").split(',');
 
     for (var i = 0; i < removeSpaces.length; i++){
       if (removeSpaces[i][removeSpaces[i].length-1] === ' '){
         removeSpaces[i] = removeSpaces[i].slice(0,removeSpaces[i].length-2);
       }
     }
-
-    // Remove empty string in beginning
-    if (removeSpaces[0] === ''){
-      removeSpaces.shift();
-    }
-
-    // Remove empty string at end
-    if (removeSpaces[removeSpaces.length-1] === ''){
-      removeSpaces.pop();
-    }
-
 
     return removeSpaces;
   }
@@ -187,6 +176,7 @@ var Options = (function(){
 
     // Add Blocked List Item
     _appendItemList();
+
     // Watch for changes
     chrome.storage.onChanged.addListener(function(){
       while (blockedWords.firstChild){

@@ -48,42 +48,47 @@ var SpoilerBlock = (function(){
     }
   }
 
-  function _htmlParser(str, wordBank){
+  function _htmlParser(str, wordBank, wordCount){
     // TODO: MAKE FUNCTION READ EVERY X WORD
     var words = str.innerHTML.split(' ');
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
 
-    _jumpX(words, 2, function(word){
+    var blockDiv = function(word){
       word = word.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
-      // console.log(word);
+
       // If last character is a special character
       if (specialCharacter.test(word[word.length-1])){
         word = word.slice(0,word.length-1);
       }
-      if (wordBank[word.toLowerCase()]){
+      if (wordBank[word]){
         _blockStyle(str);
       }
-    });
+    };
 
-    // words.forEach(function(word){
-    //   word = word.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
-    //   console.log(word);
-    //   // If last character is a special character
-    //   if (specialCharacter.test(word[word.length-1])){
-    //     word = word.slice(0,word.length-1);
-    //   }
-    //   if (wordBank[word.toLowerCase()]){
-    //     _blockStyle(str);
-    //   }
-    // });
+    // Parse through HTML and account for spaces
+    for (var i = 0; i < wordCount.length; i++){
+      _jumpX(words, wordCount[i], blockDiv);
+    }
+  }
+
+  function _numberOfWordsInObj(obj){
+    var wordCountObj = {};
+    var wordCount = [];
+    for (var i in obj){
+      wordCountObj[obj[i].split(' ').length] = obj[i].split(' ').length;
+    }
+    for (var j in wordCountObj){
+      wordCount.push(wordCountObj[j]);
+    }
+    return wordCount;
   }
 
   function _blocker(wordBank){
     var body = document.body.getElementsByTagName('*');
-    var node;
+    var wordCount = _numberOfWordsInObj(wordBank);
     for (var i = 0; i < body.length; i++){
       if (body[i].children.length === 0){
-        _htmlParser(body[i], wordBank);
+        _htmlParser(body[i], wordBank, wordCount);
       }
     }
   }
@@ -100,11 +105,8 @@ var SpoilerBlock = (function(){
 
   function watchForDOMChanges(callback){
     var target = document.body;
-    var sum = 0;
     var observer = new MutationObserver(function(mutations){
         callback();
-        console.log(sum);
-        sum++;
     });
 
     var config = {attributes:true, childList:true, characterData:true};
