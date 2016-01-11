@@ -32,28 +32,30 @@ var SpoilerBlock = (function(){
     }
   }
 
-  // Account for possessive and hypens
+  function _jumpX(arr, jump, callback){
+    var combined = [];
+    var currentNum = 0;
+    for (var i = 0; i < arr.length; i++){
+      while (currentNum<jump){
+        if (arr[i+currentNum] === arr[arr.length]){return;}
+        combined.push(arr[i+currentNum]);
+        currentNum++;
+      }
+      var combinedWord = combined.join(' ').toLowerCase();
+      callback(combinedWord);
+      currentNum = 0;
+      combined = [];
+    }
+  }
+
   function _htmlParser(str, wordBank){
     // TODO: MAKE FUNCTION READ EVERY X WORD
-    function jumpX(arr, jump){
-      var combined = [];
-      var currentNum = 0;
-      for (var i = 0; i < arr.length; i++){
-        while (currentNum<jump){
-          if (arr[i+currentNum] === arr[arr.length]){return;}
-          combined.push(arr[i+currentNum]);
-          currentNum++;
-        }
-        currentNum = 0;
-        combined = [];
-      }
-    }
-
     var words = str.innerHTML.split(' ');
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
 
-    words.forEach(function(word){
+    _jumpX(words, 2, function(word){
       word = word.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+      // console.log(word);
       // If last character is a special character
       if (specialCharacter.test(word[word.length-1])){
         word = word.slice(0,word.length-1);
@@ -62,6 +64,18 @@ var SpoilerBlock = (function(){
         _blockStyle(str);
       }
     });
+
+    // words.forEach(function(word){
+    //   word = word.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+    //   console.log(word);
+    //   // If last character is a special character
+    //   if (specialCharacter.test(word[word.length-1])){
+    //     word = word.slice(0,word.length-1);
+    //   }
+    //   if (wordBank[word.toLowerCase()]){
+    //     _blockStyle(str);
+    //   }
+    // });
   }
 
   function _blocker(wordBank){
