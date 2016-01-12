@@ -49,7 +49,6 @@ var SpoilerBlock = (function(){
   }
 
   function _htmlParser(str, wordBank, wordCount){
-    // TODO: MAKE FUNCTION READ EVERY X WORD
     var words = str.innerHTML.split(' ');
     var specialCharacter = new RegExp(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g);
 
