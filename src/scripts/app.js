@@ -105,42 +105,73 @@ var SpoilerBlock = (function(){
   function watchForDOMChanges(callback){
     var target = document.body;
     var observer = new MutationObserver(function(mutations){
-        callback();
+        mutations.forEach(function(){
+          console.log(mutations);
+          callback();
+        })
     });
 
     var config = {attributes:true, childList:true, characterData:true};
 
     observer.observe(target, config);
   }
-  
-  function FindAllPermutations(str, index, buffer) {
-    if (typeof str == "string")
-        str = str.split("");
-    if (typeof index == "undefined")
-        index = 0;
-    if (typeof buffer == "undefined")
-        buffer = [];
-    if (index >= str.length)
-        return buffer;
-    for (var i = index; i < str.length; i++)
-        buffer.push(ToggleLetters(str, index, i));
-    return FindAllPermutations(str, index + 1, buffer);
-  }
 
-  function ToggleLetters(str, index1, index2) {
-    if (index1 != index2) {
-        var temp = str[index1];
-        str[index1] = str[index2];
-        str[index2] = temp;
+  var observeDOM = (function(){
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
+      eventListenerSupported = window.addEventListener;
+
+    return function(obj, callback){
+      if( MutationObserver ){
+        // define a new observer
+        var obs = new MutationObserver(function(mutations, observer){
+          if( mutations[0].addedNodes.length || mutations[0].removedNodes.length )
+            callback();
+        });
+        // have the observer observe foo for changes in children
+        obs.observe( obj, { childList:true, subtree:true });
+      }
+      else if( eventListenerSupported ){
+        obj.addEventListener('DOMNodeInserted', callback, false);
+        obj.addEventListener('DOMNodeRemoved', callback, false);
+      }
     }
-    return str.join("");
-  }
-  
-  function WriteLine(msg) {
-    console.log(msg);
-  }
-            
-  WriteLine(FindAllPermutations("star wars"));
+  })();
+
+  // Observe a specific DOM element:
+  observeDOM( document.getElementsByTagName('body')[0],init);
+
+
+  // TODO: Add support to block anagrams
+  /*
+  // function _findAllPermutations(str, index, buffer) {
+  //   if (typeof str == "string")
+  //       str = str.split("");
+  //   if (typeof index == "undefined")
+  //       index = 0;
+  //   if (typeof buffer == "undefined")
+  //       buffer = [];
+  //   if (index >= str.length)
+  //       return buffer;
+  //   for (var i = index; i < str.length; i++)
+  //       buffer.push(_toggleLetters(str, index, i));
+  //   return _findAllPermutations(str, index + 1, buffer);
+  // }
+
+  // function _toggleLetters(str, index1, index2) {
+  //   if (index1 != index2) {
+  //       var temp = str[index1];
+  //       str[index1] = str[index2];
+  //       str[index2] = temp;
+  //   }
+  //   return str.join("");
+  // }
+
+  // function WriteLine(msg) {
+  //   console.log(msg);
+  // }
+
+  // WriteLine(_findAllPermutations("star wars"));
+  */
 
 
   return {
@@ -153,4 +184,4 @@ var SpoilerBlock = (function(){
 
 
 SpoilerBlock.init();
-SpoilerBlock.watchForDOMChanges(SpoilerBlock.init);
+

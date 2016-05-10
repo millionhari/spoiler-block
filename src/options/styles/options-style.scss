@@ -90,6 +90,23 @@ $navbar: #bf4934;
   font-size: 20px;
 }
 
+.created-by {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  p {
+    .heart {
+      color: $navbar;
+    }
+    text-align: center;
+    margin-bottom: 5px;
+	  font-size: $subtext-size;
+  }
+  a {
+    color: $navbar;
+  }
+}
+
 .button-remove {
   margin: 0 auto;
   width: 100px;

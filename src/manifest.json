@@ -3,7 +3,7 @@
   "author": "Michael Hari",
   "name": "Spoiler Block",
   "description": "This extension will black out divs based on specific keywords",
-  "version": "1.0",
+  "version": "1.0.2",
   "permissions": ["storage", "tabs"],
   "options_page": "/options/spoiler_block_options.html",
   "background": {

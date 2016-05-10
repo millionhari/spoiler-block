@@ -3,7 +3,6 @@ var Options = (function(){
   var blockedWords = document.querySelector('.blocked-words');
   var removeButton = document.querySelector('.button-remove');
   var inputBox = document.querySelector('.block-words');
-  var buttonLog = document.querySelector('.button-log');
   var ignoreWords = {
     the: 'the',
     of: 'of',
@@ -168,11 +167,11 @@ var Options = (function(){
     removeButton.onclick = _removeAllWordsFromListStorage;
 
     // Temporary Blocked
-    buttonLog.onclick = function(){
-      chrome.storage.local.get('wordsList', function(x){
-        console.log(x);
-      });
-    };
+    // buttonLog.onclick = function(){
+    //   chrome.storage.local.get('wordsList', function(x){
+    //     console.log(x);
+    //   });
+    // };
 
     // Add Blocked List Item
     _appendItemList();

@@ -1,2 +1,6 @@
 dist
 node_modules
+dist.crx
+dist.pem
+screenshots
+spoilerblock.zip
